@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/remote-stream-camera/static/css/main.c0b047a8.chunk.css",
-    "main.js": "/remote-stream-camera/static/js/main.0f2b42dc.chunk.js",
-    "main.js.map": "/remote-stream-camera/static/js/main.0f2b42dc.chunk.js.map",
+    "main.js": "/remote-stream-camera/static/js/main.9ea5adb2.chunk.js",
+    "main.js.map": "/remote-stream-camera/static/js/main.9ea5adb2.chunk.js.map",
     "runtime-main.js": "/remote-stream-camera/static/js/runtime-main.85101bd0.js",
     "runtime-main.js.map": "/remote-stream-camera/static/js/runtime-main.85101bd0.js.map",
     "static/js/2.27870a35.chunk.js": "/remote-stream-camera/static/js/2.27870a35.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.85101bd0.js",
     "static/js/2.27870a35.chunk.js",
     "static/css/main.c0b047a8.chunk.css",
-    "static/js/main.0f2b42dc.chunk.js"
+    "static/js/main.9ea5adb2.chunk.js"
   ]
 }

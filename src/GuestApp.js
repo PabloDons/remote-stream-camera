@@ -63,7 +63,7 @@ const GuestApp = () => {
   }, [peerReady]);
 
   useEffect(() => {
-    if (!videoSource) return;
+    if (videoSource === undefined) return;
     const constraints = {
       audio: false,
       video: { deviceId: videoSource ? { exact: videoSource } : true },
@@ -89,6 +89,7 @@ const GuestApp = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id, videoSource, userStream, peerReady]);
+
   return (
     <div>
       <div id="container">

@@ -13,7 +13,7 @@ jobs:
       - name: Install and Build 🔧
         run: |
           yarn install
-          PUBLIC_URL="https://pablodons.github.io/remote-stream-camera/"
+          PUBLIC_URL="https://pablodons.github.io/remote-stream-camera"
           CI=false # peerjs dependency uses expression for request of a dependecy which triggers a warning and fails next step 
           yarn run build
 

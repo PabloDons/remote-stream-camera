@@ -66,7 +66,7 @@ const GuestApp = () => {
     if (!videoSource) return;
     const constraints = {
       audio: false,
-      video: { deviceId: videoSource ? { exact: videoSource } : undefined },
+      video: { deviceId: videoSource ? { exact: videoSource } : true },
     };
     navigator.mediaDevices
       .getUserMedia(constraints)
@@ -82,7 +82,11 @@ const GuestApp = () => {
     refVideo.current.srcObject = userStream;
 
     console.log(`calling peerId ${params.id}`);
-    peer.call(params.id, userStream); // returns host media but unused
+    const conn = peer.call(params.id, userStream); // returns host media but unused
+
+    return ()=>{
+      conn.close();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id, videoSource, userStream, peerReady]);
   return (

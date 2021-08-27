@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/static/css/main.c0b047a8.chunk.css",
-    "main.js": "/static/js/main.0f2b42dc.chunk.js",
-    "main.js.map": "/static/js/main.0f2b42dc.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.a2f876e7.js",
-    "runtime-main.js.map": "/static/js/runtime-main.a2f876e7.js.map",
-    "static/js/2.27870a35.chunk.js": "/static/js/2.27870a35.chunk.js",
-    "static/js/2.27870a35.chunk.js.map": "/static/js/2.27870a35.chunk.js.map",
-    "static/js/3.f94f349d.chunk.js": "/static/js/3.f94f349d.chunk.js",
-    "static/js/3.f94f349d.chunk.js.map": "/static/js/3.f94f349d.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/main.c0b047a8.chunk.css.map": "/static/css/main.c0b047a8.chunk.css.map",
-    "static/js/2.27870a35.chunk.js.LICENSE.txt": "/static/js/2.27870a35.chunk.js.LICENSE.txt"
+    "main.css": "https://pablodons.github.io/remote-stream-camera/static/css/main.8c0d892f.chunk.css",
+    "main.js": "https://pablodons.github.io/remote-stream-camera/static/js/main.a9f68777.chunk.js",
+    "main.js.map": "https://pablodons.github.io/remote-stream-camera/static/js/main.a9f68777.chunk.js.map",
+    "runtime-main.js": "https://pablodons.github.io/remote-stream-camera/static/js/runtime-main.cdb55f0d.js",
+    "runtime-main.js.map": "https://pablodons.github.io/remote-stream-camera/static/js/runtime-main.cdb55f0d.js.map",
+    "static/js/2.27870a35.chunk.js": "https://pablodons.github.io/remote-stream-camera/static/js/2.27870a35.chunk.js",
+    "static/js/2.27870a35.chunk.js.map": "https://pablodons.github.io/remote-stream-camera/static/js/2.27870a35.chunk.js.map",
+    "static/js/3.f94f349d.chunk.js": "https://pablodons.github.io/remote-stream-camera/static/js/3.f94f349d.chunk.js",
+    "static/js/3.f94f349d.chunk.js.map": "https://pablodons.github.io/remote-stream-camera/static/js/3.f94f349d.chunk.js.map",
+    "index.html": "https://pablodons.github.io/remote-stream-camera/index.html",
+    "static/css/main.8c0d892f.chunk.css.map": "https://pablodons.github.io/remote-stream-camera/static/css/main.8c0d892f.chunk.css.map",
+    "static/js/2.27870a35.chunk.js.LICENSE.txt": "https://pablodons.github.io/remote-stream-camera/static/js/2.27870a35.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.a2f876e7.js",
+    "static/js/runtime-main.cdb55f0d.js",
     "static/js/2.27870a35.chunk.js",
-    "static/css/main.c0b047a8.chunk.css",
-    "static/js/main.0f2b42dc.chunk.js"
+    "static/css/main.8c0d892f.chunk.css",
+    "static/js/main.a9f68777.chunk.js"
   ]
 }

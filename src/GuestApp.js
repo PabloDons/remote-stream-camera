@@ -5,6 +5,7 @@ Based on this webrtc sample https://github.com/webrtc/samples/tree/gh-pages/src/
 import Peer from "peerjs";
 import { useEffect, useRef, useState } from "react";
 import Url from "url-parse";
+import { v4 as uuidv4 } from "uuid";
 
 function handleError(error) {
   console.log("navigator.MediaDevices.getUserMedia error: ", error.message, error.name);
@@ -20,9 +21,11 @@ const GuestApp = () => {
 
   const refVideo = useRef(null);
   const refVideoSource = useRef(null);
+  const refIncludeAudio = useRef(null);
   const refAudioSource = useRef(null);
   const [videoSource, setVideoSource] = useState();
   const [audioSource, setAudioSource] = useState();
+  const [includeAudio, setIncludeAudio] = useState(false);
 
   useEffect(() => {
     setVideoSource(refVideoSource.current?.value);
@@ -31,6 +34,10 @@ const GuestApp = () => {
   useEffect(() => {
     setAudioSource(refAudioSource.current?.value);
   }, [refAudioSource.current?.value]);
+
+  useEffect(() => {
+    setIncludeAudio(refIncludeAudio.current?.checked);
+  }, [refIncludeAudio.current?.checked]);
 
   useEffect(() => {
     navigator.mediaDevices
@@ -84,10 +91,12 @@ const GuestApp = () => {
 
   useEffect(() => {
     if (videoSource === undefined) return;
-    if (audioSource === undefined) return;
+
+    console.log(includeAudio);
+
     const constraints = {
-      audio: audioSource === "none" ? false : { deviceId: audioSource ? { exact: audioSource } : true },
-      video: { deviceId: videoSource ? { exact: videoSource } : true },
+      ...(includeAudio && { audio: { deviceId: audioSource ? { exact: audioSource } : undefined } }),
+      video: { deviceId: videoSource ? { exact: videoSource } : undefined },
     };
     navigator.mediaDevices
       .getUserMedia(constraints)
@@ -96,7 +105,8 @@ const GuestApp = () => {
         refVideo.current.srcObject = stream;
       })
       .catch(handleError);
-  }, [audioSource, videoSource]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [videoSource, includeAudio]);
 
   useEffect(() => {
     if (!peerReady) return;
@@ -118,6 +128,10 @@ const GuestApp = () => {
     setAudioSource(refAudioSource.current?.value);
   }
 
+  function onChangeIncludeAudio() {
+    setIncludeAudio(refIncludeAudio.current?.checked);
+  }
+
   return (
     <div>
       <h1>
@@ -131,33 +145,32 @@ const GuestApp = () => {
           <label>
             {"Video source: "}
             <select ref={refVideoSource} onChange={onChangeVideoSource}>
-              {deviceInfos &&
-                deviceInfos
-                  .filter(deviceInfo => deviceInfo.kind === "videoinput" && deviceInfo.deviceId)
-                  .map((deviceInfo, index) => (
-                    <option key={deviceInfo.deviceId} value={deviceInfo.deviceId}>
-                      {deviceInfo.label || `camera ${index}`}
-                    </option>
-                  ))}
+              {deviceInfos
+                .filter(deviceInfo => deviceInfo.kind === "videoinput")
+                .map((deviceInfo, index) => (
+                  <option key={deviceInfo.deviceId} value={deviceInfo.deviceId}>
+                    {deviceInfo.label || `camera ${index}`}
+                  </option>
+                ))}
             </select>
           </label>
+          <br />
+          <input ref={refIncludeAudio} type="checkbox" onChange={onChangeIncludeAudio} />
           <label>
-            {"Audio source: "}
+            {" Audio source: "}
             <select ref={refAudioSource} onChange={onChangeAudioSource}>
-              {deviceInfos &&
-                deviceInfos
-                  .filter(deviceInfo => deviceInfo.kind === "audioinput" && deviceInfo.deviceId)
-                  .map((deviceInfo, index) => (
-                    <option key={deviceInfo.deviceId} value={deviceInfo.deviceId}>
-                      {deviceInfo.label || `microphone ${index}`}
-                    </option>
-                  ))}
-              <option value="none">None</option>
+              {deviceInfos
+                .filter(deviceInfo => deviceInfo.kind === "audioinput")
+                .map((deviceInfo, index) => (
+                  <option key={deviceInfo.deviceId} value={deviceInfo.deviceId}>
+                    {deviceInfo.label || `microphone ${index}`}
+                  </option>
+                ))}
             </select>
           </label>
         </div>
       </div>
-      <video style={{ width: "80vw" }} ref={refVideo} autoPlay />
+      <video style={{ width: "80vw" }} ref={refVideo} autoPlay muted />
     </div>
   );
 };

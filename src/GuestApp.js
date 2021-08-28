@@ -109,6 +109,9 @@ const GuestApp = () => {
 
   return (
     <div>
+      <h1>
+        remote-stream-camera (<a href={"https://github.com/PabloDons/remote-stream-camera"}>github</a>)
+      </h1>
       <div id="container">
         <p>
           <b>Note:</b> without permission, the browser will restrict the available devices to at most one per type.

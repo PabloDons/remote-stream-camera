@@ -10,10 +10,13 @@ function App() {
 
   return (
     <div>
+      <h1>
+        remote-stream-camera (<a href={"https://github.com/PabloDons/remote-stream-camera"}>github</a>)
+      </h1>
       <table>
         <thead>
           <tr>
-            <td>{"please use these urls for each stream:"}</td>
+            <td>{"URLs you need:"}</td>
           </tr>
         </thead>
         <tbody>

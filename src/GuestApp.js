@@ -5,7 +5,6 @@ Based on this webrtc sample https://github.com/webrtc/samples/tree/gh-pages/src/
 import Peer from "peerjs";
 import { useEffect, useRef, useState } from "react";
 import Url from "url-parse";
-import { v4 as uuidv4 } from "uuid";
 
 function handleError(error) {
   console.log("navigator.MediaDevices.getUserMedia error: ", error.message, error.name);

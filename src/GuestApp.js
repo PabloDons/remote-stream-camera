@@ -105,7 +105,7 @@ const GuestApp = () => {
       })
       .catch(handleError);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [videoSource, includeAudio]);
+  }, [videoSource, includeAudio, audioSource]);
 
   useEffect(() => {
     if (!peerReady) return;

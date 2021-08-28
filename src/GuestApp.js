@@ -20,7 +20,11 @@ const GuestApp = () => {
 
   const refVideo = useRef(null);
   const refVideoSource = useRef(null);
-  const videoSource = refVideoSource.current && refVideoSource.current.value;
+  const [videoSource, setVideoSource] = useState();
+
+  useEffect(() => {
+    setVideoSource(refVideoSource.current?.value);
+  }, [refVideoSource.current?.value]);
 
   useEffect(() => {
     navigator.mediaDevices
@@ -29,16 +33,20 @@ const GuestApp = () => {
         setDeviceInfos(devices);
       })
       .catch(handleError);
-  });
+  }, [userStream]);
 
   useEffect(() => {
     if (peer && !peer.disconnected && !peer.destroyed) return;
     if (peer && !peer.destroyed) {
       peer.reconnect();
+      setPeerReady(true);
       return;
     }
 
-    if (peer) peer.destroy();
+    if (peer) {
+      setPeerReady(false);
+      peer.destroy();
+    }
 
     const newPeer = new Peer();
 
@@ -47,8 +55,14 @@ const GuestApp = () => {
       console.log(`client ready with ID: ${id}`);
     });
 
-    newPeer.on("error", () => setPeerReady(false));
-    newPeer.on("disconnected", () => setPeerReady(false));
+    newPeer.on("error", err => {
+      console.error(err);
+      setPeerReady(false);
+    });
+    newPeer.on("disconnected", err => {
+      console.error(err);
+      setPeerReady(false);
+    });
 
     setPeer(newPeer);
 
@@ -60,7 +74,7 @@ const GuestApp = () => {
       setPeerReady(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [peerReady]);
+  }, [peer?.disconnected, peer?.destroyed]);
 
   useEffect(() => {
     if (videoSource === undefined) return;
@@ -72,6 +86,7 @@ const GuestApp = () => {
       .getUserMedia(constraints)
       .then(stream => {
         setUserStream(stream);
+        refVideo.current.srcObject = stream;
       })
       .catch(handleError);
   }, [videoSource]);
@@ -79,16 +94,18 @@ const GuestApp = () => {
   useEffect(() => {
     if (!peerReady) return;
     if (!userStream) return;
-    refVideo.current.srcObject = userStream;
 
     console.log(`calling peerId ${params.id}`);
-    const conn = peer.call(params.id, userStream); // returns host media but unused
+    const conn = peer.call(params.id, userStream);
 
-    return ()=>{
+    return () => {
       conn.close();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.id, videoSource, userStream, peerReady]);
+    };
+  }, [params.id, userStream, peerReady, peer]);
+
+  function onChangeVideoSource() {
+    setVideoSource(refVideoSource.current?.value);
+  }
 
   return (
     <div>
@@ -97,20 +114,22 @@ const GuestApp = () => {
           <b>Note:</b> without permission, the browser will restrict the available devices to at most one per type.
         </p>
         <div className="select">
-          <label htmlFor={refVideoSource.current}>Video source: </label>
-          <select ref={refVideoSource}>
-            {deviceInfos &&
-              deviceInfos
-                .filter(deviceInfo => deviceInfo.kind === "videoinput")
-                .map((deviceInfo, index) => (
-                  <option key={deviceInfo.deviceId} value={deviceInfo.deviceId}>
-                    {deviceInfo.label || `camera ${index}`}
-                  </option>
-                ))}
-          </select>
+          <label htmlFor={refVideoSource.current}>
+            {"Video source: "}
+            <select ref={refVideoSource} onChange={onChangeVideoSource}>
+              {deviceInfos &&
+                deviceInfos
+                  .filter(deviceInfo => deviceInfo.kind === "videoinput" && deviceInfo.deviceId)
+                  .map((deviceInfo, index) => (
+                    <option key={deviceInfo.deviceId} value={deviceInfo.deviceId}>
+                      {deviceInfo.label || `camera ${index}`}
+                    </option>
+                  ))}
+            </select>
+          </label>
         </div>
       </div>
-      <video ref={refVideo} autoPlay />
+      <video style={{ width: "80vw" }} ref={refVideo} autoPlay />
     </div>
   );
 };

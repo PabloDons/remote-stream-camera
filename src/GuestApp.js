@@ -20,11 +20,17 @@ const GuestApp = () => {
 
   const refVideo = useRef(null);
   const refVideoSource = useRef(null);
+  const refAudioSource = useRef(null);
   const [videoSource, setVideoSource] = useState();
+  const [audioSource, setAudioSource] = useState();
 
   useEffect(() => {
     setVideoSource(refVideoSource.current?.value);
   }, [refVideoSource.current?.value]);
+
+  useEffect(() => {
+    setAudioSource(refAudioSource.current?.value);
+  }, [refAudioSource.current?.value]);
 
   useEffect(() => {
     navigator.mediaDevices
@@ -78,8 +84,9 @@ const GuestApp = () => {
 
   useEffect(() => {
     if (videoSource === undefined) return;
+    if (audioSource === undefined) return;
     const constraints = {
-      audio: false,
+      audio: audioSource === "none" ? false : { deviceId: audioSource ? { exact: audioSource } : true },
       video: { deviceId: videoSource ? { exact: videoSource } : true },
     };
     navigator.mediaDevices
@@ -89,7 +96,7 @@ const GuestApp = () => {
         refVideo.current.srcObject = stream;
       })
       .catch(handleError);
-  }, [videoSource]);
+  }, [audioSource, videoSource]);
 
   useEffect(() => {
     if (!peerReady) return;
@@ -107,6 +114,10 @@ const GuestApp = () => {
     setVideoSource(refVideoSource.current?.value);
   }
 
+  function onChangeAudioSource() {
+    setAudioSource(refAudioSource.current?.value);
+  }
+
   return (
     <div>
       <h1>
@@ -117,7 +128,7 @@ const GuestApp = () => {
           <b>Note:</b> without permission, the browser will restrict the available devices to at most one per type.
         </p>
         <div className="select">
-          <label htmlFor={refVideoSource.current}>
+          <label>
             {"Video source: "}
             <select ref={refVideoSource} onChange={onChangeVideoSource}>
               {deviceInfos &&
@@ -128,6 +139,20 @@ const GuestApp = () => {
                       {deviceInfo.label || `camera ${index}`}
                     </option>
                   ))}
+            </select>
+          </label>
+          <label>
+            {"Audio source: "}
+            <select ref={refAudioSource} onChange={onChangeAudioSource}>
+              {deviceInfos &&
+                deviceInfos
+                  .filter(deviceInfo => deviceInfo.kind === "audioinput" && deviceInfo.deviceId)
+                  .map((deviceInfo, index) => (
+                    <option key={deviceInfo.deviceId} value={deviceInfo.deviceId}>
+                      {deviceInfo.label || `microphone ${index}`}
+                    </option>
+                  ))}
+              <option value="none">None</option>
             </select>
           </label>
         </div>

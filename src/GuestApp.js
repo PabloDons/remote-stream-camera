@@ -104,7 +104,6 @@ const GuestApp = () => {
         refVideo.current.srcObject = stream;
       })
       .catch(handleError);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoSource, includeAudio, audioSource]);
 
   useEffect(() => {
